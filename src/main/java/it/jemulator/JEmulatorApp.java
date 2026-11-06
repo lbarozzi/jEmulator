@@ -33,7 +33,7 @@ public final class JEmulatorApp extends Application {
     private final ToggleButton[] outputButtons = new ToggleButton[4];
     private final Slider[] pwmSliders = new Slider[2];
     private final Label[] pwmValues = new Label[2];
-    private final TextField fifoPath = new TextField("/tmp/jemulator");
+    private final TextField fifoPath = new TextField(FifoServer.defaultEndpointBase().toString());
     private FifoServer server;
 
     @Override
@@ -44,7 +44,7 @@ public final class JEmulatorApp extends Application {
 
         VBox heading = new VBox(4,
                 styledLabel("jEmulator", 25, "#15243a", true),
-                styledLabel("Simulatore I/O con protocollo testuale su FIFO", 13, "#62738a", false));
+                styledLabel("Simulatore I/O con protocollo testuale su endpoint bidirezionali", 13, "#62738a", false));
         root.setTop(heading);
 
         VBox content = new VBox(16, createConnectionPanel(), createDevicePanel(), createLogPanel());
@@ -68,11 +68,11 @@ public final class JEmulatorApp extends Application {
     }
 
     private VBox createConnectionPanel() {
-        VBox panel = panel("Connessione FIFO");
+        VBox panel = panel("Connessione endpoint");
         GridPane fields = new GridPane();
         fields.setHgap(10);
         fields.setVgap(8);
-        fields.add(styledLabel("FIFO", 12, "#62738a", false), 0, 0);
+        fields.add(styledLabel("Base endpoint", 12, "#62738a", false), 0, 0);
         fields.add(fifoPath, 1, 0);
         GridPane.setHgrow(fifoPath, Priority.ALWAYS);
         fifoPath.setPrefColumnCount(32);
@@ -178,7 +178,7 @@ public final class JEmulatorApp extends Application {
                     this::setStatus);
             server.start();
             fifoPath.setDisable(true);
-            appendLog("FIFO pronta: " + fifoPath.getText() + " (risposte nel log)");
+            appendLog("Endpoint pronti: " + server.endpoints());
         } catch (IOException | RuntimeException exception) {
             server = null;
             setStatus("Errore: " + exception.getMessage());
