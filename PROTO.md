@@ -10,6 +10,7 @@ FIFO: sono visibili nel log della finestra JavaFX.
 Su Linux, all'avvio il programma crea la FIFO se non esiste:
 
 - Percorso predefinito: `/tmp/jemulator`
+- per Windows  \\.\pipe\ 
 
 Il percorso puo' essere cambiato nella finestra prima di premere **Avvia**. La
 FIFO esistente viene riutilizzata, ma un file normale con lo stesso nome non
